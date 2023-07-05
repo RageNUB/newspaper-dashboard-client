@@ -1,23 +1,23 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import useURL from "../../hooks/useURL";
 
 const AddUser = () => {
   const [isShow, setIsShow] = useState(false);
+  const baseURL = useURL()
 
   const handleCreateUser = (event) => {
     event.preventDefault();
     const form = event.target;
     const name = form.name.value;
-    const email = form.email.value;
-    const contact_number = form.number.value;
+    const username = form.username.value;
     const password = form.password.value;
     const user = {
-      name,
-      email,
-      contact_number,
-      password,
+      full_name: name,
+      username: username,
+      password: password,
     };
-    fetch(`http://localhost:8000/users`, {
+    fetch(`${baseURL}/create_user`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -57,17 +57,9 @@ const AddUser = () => {
             </div>
             <div className="form-control">
               <input
-                type="email"
-                name="email"
-                placeholder="Email ID"
-                className="input input-bordered w-full"
-              />
-            </div>
-            <div className="form-control">
-              <input
                 type="text"
-                name="number"
-                placeholder="Conatct Number"
+                name="username"
+                placeholder="Username"
                 className="input input-bordered w-full"
               />
             </div>

@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
+import useURL from "../../hooks/useURL";
 
 const ManageUser = () => {
   const [users, setUsers] = useState([]);
+  const baseURL = useURL()
 
   useEffect(() => {
-    fetch("http://tv369.in:8000/api/v1/accounts/users/")
+    fetch(`${baseURL}/show_users`)
       .then((res) => res.json())
-      .then((data) => console.log(data.results));
-  }, []);
+      .then((data) => setUsers(data.result));
+  }, [baseURL]);
 
   return (
     <div className="w-full">
@@ -19,17 +21,17 @@ const ManageUser = () => {
             <tr>
               <th></th>
               <th>Name</th>
-              <th>Role</th>
-              <th>Email</th>
+              <th>Username</th>
+              {/* <th>Email</th>
               <th>Contact</th>
               <th>Last Login</th>
-              <th>Action</th>
+              <th>Action</th> */}
             </tr>
           </thead>
           <tbody>
             {/* row 1 */}
             {users.map((user) => (
-              <tr key={user.id}>
+              <tr key={user.pk}>
                 <td>
                   <div className="flex items-center space-x-3">
                     <div className="avatar">
@@ -43,10 +45,10 @@ const ManageUser = () => {
                   </div>
                 </td>
                 <td>
-                  <div className="font-bold">{user.name}</div>
+                  <div className="font-bold">{user.fields.full_name}</div>
                 </td>
-                <th>{user.role}</th>
-                <th>{user.email}</th>
+                <th>{user.fields.username}</th>
+                {/* <th>{user.email}</th>
                 <th>{user.contact_number}</th>
                 <th className="text-primary">{user.last_online}</th>
                 <th className="text-primary flex justify-items-center gap-2 text-lg mt-3">
@@ -59,7 +61,7 @@ const ManageUser = () => {
                   <p>
                     <FaEye></FaEye>
                   </p>
-                </th>
+                </th> */}
               </tr>
             ))}
             <tr>
@@ -78,8 +80,8 @@ const ManageUser = () => {
               <td>
                 <div className="font-bold">Hart Hagerty</div>
               </td>
-              <th>Admin</th>
-              <th>employee@pendler.com</th>
+              <th>harthagerty</th>
+              {/* <th>employee@pendler.com</th>
               <th>0123456789</th>
               <th className="text-primary">Today(22:45)</th>
               <th className="text-primary flex justify-items-center gap-2 text-lg mt-3">
@@ -92,7 +94,7 @@ const ManageUser = () => {
                 <p>
                   <FaEye></FaEye>
                 </p>
-              </th>
+              </th> */}
             </tr>
           </tbody>
         </table>

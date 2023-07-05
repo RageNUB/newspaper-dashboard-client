@@ -1,37 +1,38 @@
 import { useEffect, useState } from "react";
+import useURL from "../../hooks/useURL";
 
 const ManagePost = () => {
   const [newses, setNewses] = useState([]);
+  const baseURL = useURL()
+
   
   useEffect(() => {
-    fetch("http://tv369.in:8000/api/v1/news/")
+    fetch(`${baseURL}/show_all_articles/`)
       .then((res) => res.json())
-      .then((data) => setNewses(data.results));
-  }, []);
-
-  console.log(newses)
+      .then((data) => setNewses(data.result));
+  }, [baseURL]);
 
   return (
     <div className="my-5">
       <div className="px-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center">
         {newses.map((news) => (
           <div
-            key={news.id}
+            key={news.pk}
             className="card card-compact w-64 bg-base-100 shadow-xl"
           >
             <figure>
-              <img className="w-64 h-40" src={news.cover_image} alt="Shoes" />
+              <img className="w-64 h-40" src={news.fields.cover_image} alt="Shoes" />
             </figure>
             <div className="card-body">
-              <h2 className="text-xl font-bold">{news.title}</h2>
-              <p className="text-base font-medium">{news.author}</p>
+              <h2 className="text-xl font-bold">{news.fields.title}</h2>
+              <p className="text-base font-medium">{news.fields.author}</p>
               <p>
-                {news.content} <span className="text-primary">...See more</span>
+                {news.fields.content} <span className="text-primary">...See more</span>
               </p>
-              <div className="card-actions justify-end">
+              {/* <div className="card-actions justify-end">
                 <button className="btn btn-ghost btn-xs">Edit post</button>
                 <button className="btn btn-ghost btn-xs">Show Post</button>
-              </div>
+              </div> */}
             </div>
           </div>
         ))}
@@ -47,10 +48,10 @@ const ManagePost = () => {
             <h2 className="text-xl font-bold">Title Here</h2>
             <p className="text-base font-medium">Author Name</p>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore officia, facere hic laudantium tempora architecto?</p>
-            <div className="card-actions justify-end">
+            {/* <div className="card-actions justify-end">
               <button className="btn btn-ghost btn-xs">Edit post</button>
               <button className="btn btn-ghost btn-xs">Show Post</button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import useURL from "../../hooks/useURL";
 
 const AddPost = () => {
   const [time, setTime] = useState(new Date());
+  const baseURL = useURL()
   const {
     register,
     handleSubmit,
@@ -18,9 +20,10 @@ const AddPost = () => {
       title: data.title,
       cover_image: data.img,
       author: data.author,
+      categories: data.core_categories,
       content: data.content
     }
-    fetch(`http://tv369.in:8000/api/v1/news/add/`, {
+    fetch(`${baseURL}/create_news_article`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
