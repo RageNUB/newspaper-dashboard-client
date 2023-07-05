@@ -9,8 +9,9 @@ const ManagePost = () => {
   useEffect(() => {
     fetch(`${baseURL}/show_all_articles/`)
       .then((res) => res.json())
-      .then((data) => setNewses(data.result));
+      .then((data) => setNewses(eval(data.result)));
   }, [baseURL]);
+  console.log(newses)
 
   return (
     <div className="my-5">

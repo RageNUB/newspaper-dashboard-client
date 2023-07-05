@@ -87,10 +87,10 @@ const AddPost = () => {
             </div>
             <div>
               <input
-                type="text"
+                type="file"
                 name="image"
                 placeholder="Image"
-                className="input input-bordered w-full"
+                className="file-input file-input-bordered file-input-primary w-full"
                 {...register("img", { required: true })}
               />
               {errors.img && (
