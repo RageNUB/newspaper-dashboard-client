@@ -5,10 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import useURL from "../../hooks/useURL";
+import { Helmet } from "react-helmet-async";
 
 const Login = () => {
   const [isShow, setIsShow] = useState(false);
-  //   const [error, setError] = useState(false);
   const baseURL = useURL();
   const {
     register,
@@ -22,17 +22,24 @@ const Login = () => {
       username: data.username,
       password: data.password
     }
+
+    const formData = new FormData();
+    formData.append('username', data.username);
+    formData.append('password', data.password);
+
     fetch(`${baseURL}/login/`, {
       method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
+      // headers: {
+      //   "content-type": "application/json",
+      // },
       body: JSON.stringify(loginInfo),
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-        navigate("/");
+        console.log(data.result);
+        if(data.result == "Login successful!"){
+          navigate("/dashboard/home");
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -45,6 +52,9 @@ const Login = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>TV369 | Login</title>
+      </Helmet>
       <div className="bg-base-200 min-h-screen pt-12">
         <div className="text-center">
           <div className="flex justify-center items-center gap-3">

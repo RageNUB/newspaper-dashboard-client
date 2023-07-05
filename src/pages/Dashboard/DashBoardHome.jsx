@@ -1,4 +1,3 @@
-import icon from "../../assets/icons8-checklist-64.png";
 
 const DashBoardHome = () => {
   return (

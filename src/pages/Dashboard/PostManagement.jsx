@@ -12,7 +12,6 @@ const PostManagement = () => {
               to=""
             >
               Manage Post
-              {/* <hr className="h-1.5 w-12 bg-neutral"/> */}
             </NavLink>
           </p>
         </div>

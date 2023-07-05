@@ -10,10 +10,14 @@ import Login from "../pages/Login/Login";
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Login></Login>,
+  },
+  {
+    path: "/dashboard",
     element: <Dashboard></Dashboard>,
     children: [
       {
-        path: "/",
+        path: "home",
         element: <DashBoardHome></DashBoardHome>,
       },
       {
@@ -36,12 +40,43 @@ const router = createBrowserRouter([
           },
         ],
       },
-    ],
-  },
-  {
-    path: "/login",
-    element: <Login></Login>,
-  },
+    ]
+  }
+
+  // {
+  //   peth: "/login",
+  //   element: <Login></Login>
+  // },
+  // {
+  //   path: "/",
+  //   element: <Dashboard></Dashboard>,
+  //   children: [
+  //     {
+  //       path: "/",
+  //       element: <DashBoardHome></DashBoardHome>,
+  //     },
+  //     {
+  //       path: "user-management",
+  //       element: <UserManagement></UserManagement>,
+  //       children: [
+  //         {
+  //           path: "",
+  //           element: <ManageUser></ManageUser>,
+  //         }
+  //       ],
+  //     },
+  //     {
+  //       path: "post-management",
+  //       element: <PostManagement></PostManagement>,
+  //       children: [
+  //         {
+  //           path: "",
+  //           element: <ManagePost></ManagePost>,
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
 ]);
 
 export default router;

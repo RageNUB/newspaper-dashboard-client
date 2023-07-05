@@ -4,7 +4,7 @@ import useURL from "../../hooks/useURL";
 
 const AddUser = () => {
   const [isShow, setIsShow] = useState(false);
-  const baseURL = useURL()
+  const baseURL = useURL();
 
   const handleCreateUser = (event) => {
     event.preventDefault();
@@ -12,17 +12,18 @@ const AddUser = () => {
     const name = form.name.value;
     const username = form.username.value;
     const password = form.password.value;
-    const user = {
-      full_name: name,
-      username: username,
-      password: password,
-    };
+
+    const formData = new FormData();
+    formData.append('full_name', name);
+    formData.append('username',username);
+    formData.append('password', password);
+
     fetch(`${baseURL}/create_user/`, {
       method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(user),
+      // headers: {
+      //   "content-type": "application/json",
+      // },
+      body: formData,
     })
       .then((res) => res.json())
       .then((data) => {
@@ -30,9 +31,6 @@ const AddUser = () => {
       });
   };
 
-  const toggle = () => {
-    setIsShow(!isShow);
-  };
 
   return (
     <dialog id="my_modal_3" className="modal">
@@ -45,7 +43,10 @@ const AddUser = () => {
         <h1 className="text-2xl font-bold text-center mt-2 ">
           Let&apos;s set up your user profile with some basic information
         </h1>
-        <form onSubmit={handleCreateUser} className="w-full">
+        <form
+          onSubmit={handleCreateUser}
+          className="w-full"
+        >
           <div className="grid grid-cols-1 gap-5 mt-12 mb-3">
             <div>
               <input
@@ -72,7 +73,7 @@ const AddUser = () => {
                   className="input input-bordered w-full"
                 />
               </div>
-              <div onClick={toggle} className="text-primary">
+              <div onClick={() => setIsShow(!isShow)} className="text-primary">
                 {!isShow && (
                   <span className="text-xl">
                     <FaEyeSlash></FaEyeSlash>

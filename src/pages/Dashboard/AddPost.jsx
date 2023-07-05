@@ -15,20 +15,19 @@ const AddPost = () => {
   }, []);
 
   const onSubmit = (data) => {
-    // console.log(data);
-    const postDetails = {
-      title: data.title,
-      cover_image: data.img,
-      author: data.author,
-      categories: data.core_categories,
-      content: data.content
-    }
+    const formData = new FormData();
+    formData.append('title', data.title);
+    formData.append('cover_image', data.img);
+    formData.append('author', data.author);
+    formData.append('content', data.content);
+    formData.append('categories', data.core_categories);
+    
     fetch(`${baseURL}/create_news_article/`, {
       method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(postDetails),
+      // headers: {
+      //   "content-type": "application/json",
+      // },
+      body: formData,
     })
       .then((res) => res.json())
       .then((data) => {
@@ -79,7 +78,7 @@ const AddPost = () => {
                 name="tags"
                 placeholder="Tags"
                 className="input input-bordered w-full"
-                {...register("tags", { required: true })}
+                {...register("tags", { required: false })}
               />
               {errors.tags && (
                 <span className="text-red-600">Tags is required</span>
