@@ -7,7 +7,7 @@ const ManageUser = () => {
   const baseURL = useURL()
 
   useEffect(() => {
-    fetch(`${baseURL}/show_users`)
+    fetch(`${baseURL}/show_users/`)
       .then((res) => res.json())
       .then((data) => setUsers(data.result));
   }, [baseURL]);

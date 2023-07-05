@@ -17,7 +17,7 @@ const AddUser = () => {
       username: username,
       password: password,
     };
-    fetch(`${baseURL}/create_user`, {
+    fetch(`${baseURL}/create_user/`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

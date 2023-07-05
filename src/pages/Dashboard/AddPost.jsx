@@ -15,7 +15,7 @@ const AddPost = () => {
   }, []);
 
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
     const postDetails = {
       title: data.title,
       cover_image: data.img,
@@ -23,7 +23,7 @@ const AddPost = () => {
       categories: data.core_categories,
       content: data.content
     }
-    fetch(`${baseURL}/create_news_article`, {
+    fetch(`${baseURL}/create_news_article/`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

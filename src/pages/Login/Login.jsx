@@ -4,10 +4,12 @@ import illustrator from "../../assets/undraw_login_re_4vu2.svg";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import useURL from "../../hooks/useURL";
 
 const Login = () => {
   const [isShow, setIsShow] = useState(false);
-//   const [error, setError] = useState(false);
+  //   const [error, setError] = useState(false);
+  const baseURL = useURL();
   const {
     register,
     handleSubmit,
@@ -16,22 +18,25 @@ const Login = () => {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    console.log(data)
-    fetch(`http://tv369.in:8000/api/v1/auth/login/`, {
+    const loginInfo = {
+      username: data.username,
+      password: data.password
+    }
+    fetch(`${baseURL}/login/`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(loginInfo),
     })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data)
-        navigate("/")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        navigate("/");
       })
-      .catch(error => {
-        console.log(error)
-      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const toggle = () => {
