@@ -110,11 +110,11 @@ const AddPost = () => {
             </div>
             <div>
               <input
-                type="text"
+                type="datetime-local"
                 name="currenttime"
                 placeholder={`${time.toLocaleDateString()} ${time.toLocaleTimeString()}`}
                 className="input input-bordered w-full"
-                disabled
+              
                 {...register("created_at", { required: false })}
               />
             </div>

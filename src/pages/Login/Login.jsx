@@ -1,7 +1,7 @@
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import logo from "../../assets/tvLogo.png";
 import illustrator from "../../assets/undraw_login_re_4vu2.svg";
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import useURL from "../../hooks/useURL";
@@ -18,27 +18,27 @@ const Login = () => {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    const loginInfo = {
-      username: data.username,
-      password: data.password
-    }
-
+    // const loginInfo = {
+    //   username: data.username,
+    //   password: data.password
+    // }
+// console.log(json.)
     const formData = new FormData();
     formData.append('username', data.username);
     formData.append('password', data.password);
-
+    
     fetch(`${baseURL}/login/`, {
       method: "POST",
       // headers: {
       //   "content-type": "application/json",
       // },
-      body: JSON.stringify(loginInfo),
+      body: formData,
     })
       .then((res) => res.json())
       .then((data) => {
         console.log(data.result);
         if(data.result == "Login successful!"){
-          navigate("/dashboard/home");
+          navigate("/dashboard/");
         }
       })
       .catch((error) => {
