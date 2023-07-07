@@ -1,9 +1,9 @@
 
-// import useURL from "../../hooks/useURL";
-import useMEDIA from "../../hooks/useMEDIA";
+import useURL from "../../hooks/useURL";
+// import useMEDIA from "../../hooks/useMEDIA";
 const AddUser = () => {
-  // const baseURL = useURL();
-  const baseMedia=useMEDIA();
+  const baseURL = useURL();
+  // const baseMedia=useMEDIA();
   const handleCreateUser = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -12,7 +12,7 @@ const AddUser = () => {
     formData.append('author', author);
 
 
-    fetch(`${baseMedia}/create_author/`, {
+    fetch(`${baseURL}/create_author/`, {
       method: "POST",
       body: formData,
     })
