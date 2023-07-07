@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import useURL from "../../hooks/useURL";
-
+import useMEDIA from "../../hooks/useMEDIA";
 const ManagePost = () => {
   const [newses, setNewses] = useState([]);
   const baseURL = useURL();
-
+  const baseMedia=useMEDIA();
   useEffect(() => {
     fetch(`${baseURL}/show_all_articles/`)
       .then((res) => res.json())
@@ -23,10 +23,11 @@ const ManagePost = () => {
             <figure>
               <img
                 className="w-64 h-40"
-                src={news.fields.cover_image}
+                src={`${baseMedia}${news.fields.cover_image}`}
                 alt="Shoes"
               />
             </figure>
+            {  console.log(baseMedia,news.fields.cover_image)}
             <div className="card-body">
               <h2 className="text-xl font-bold">{news.fields.title}</h2>
               <p className="text-base font-medium">{news.fields.author}</p>

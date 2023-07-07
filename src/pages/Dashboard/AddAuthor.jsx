@@ -1,24 +1,19 @@
 
-import useURL from "../../hooks/useURL";
-
+// import useURL from "../../hooks/useURL";
+import useMEDIA from "../../hooks/useMEDIA";
 const AddUser = () => {
-  const baseURL = useURL();
-
+  // const baseURL = useURL();
+  const baseMedia=useMEDIA();
   const handleCreateUser = (event) => {
     event.preventDefault();
     const form = event.target;
     const author = form.author.value;
-
-
     const formData = new FormData();
     formData.append('author', author);
 
 
-    fetch(`${baseURL}/create_author/`, {
+    fetch(`${baseMedia}/create_author/`, {
       method: "POST",
-      // headers: {
-      //   "content-type": "application/json",
-      // },
       body: formData,
     })
       .then((res) => res.json())
@@ -47,7 +42,7 @@ const AddUser = () => {
             <div>
               <input
                 type="text"
-                name="Author"
+                name="author"
                 placeholder="Author Full Name"
                 className="input input-bordered w-full"
               />

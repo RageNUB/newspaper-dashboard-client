@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import useURL from "../../hooks/useURL";
 
 const AddPost = () => {
+  // console.log(eval(data.result));
   const [time, setTime] = useState(new Date());
   const baseURL = useURL()
   const {
@@ -14,6 +15,45 @@ const AddPost = () => {
     setInterval(() => setTime(new Date()), 1000);
   }, []);
 
+  async function fet1(){
+    const resp=await fetch(
+      `https://tv369.in:8443/show_author/`
+    );
+    // console.log(resp.json())
+    return await resp.json();
+  }
+  const [auth, setauth] = useState({
+    loading: true,
+    articles: [],
+  });
+  // fet();
+  useEffect(() => {
+    (async () => {
+      const auth = await fet1();
+      console.log(eval(auth.result));
+      setauth({ loading: false, articles: eval(auth.result) });
+    })();
+  }, []);
+  async function fet2(){
+    const resp=await fetch(
+      `${baseURL}/show_category/`
+    );
+    // console.log(resp.json())
+    return await resp.json();
+  }
+  const [cate, setcate] = useState({
+    loading: true,
+    articles: [],
+  });
+  useEffect(() => {
+    (async () => {
+      const cate = await fet2();
+      console.log(eval(cate.result));
+      setcate({ loading: false, articles: eval(cate.result) });
+    })();
+  }, []);
+  
+
   const onSubmit = (data) => {
     const formData = new FormData();
     formData.append('title', data.title);
@@ -24,9 +64,6 @@ const AddPost = () => {
     
     fetch(`${baseURL}/create_news_article/`, {
       method: "POST",
-      // headers: {
-      //   "content-type": "application/json",
-      // },
       body: formData,
     })
       .then((res) => res.json())
@@ -61,13 +98,21 @@ const AddPost = () => {
               )}
             </div>
             <div>
-              <input
-                type="text"
-                name="author"
-                placeholder="Author"
-                className="input input-bordered w-full"
-                {...register("author", { required: true })}
-              />
+          
+            <select className="input input-bordered w-full" placeholder="author" name="category" id="lang">
+                <option disabled selected hidden>Select a Author</option>
+            { 
+            auth.loading ? (
+            <p> Data is fetching.....</p>
+        ) : auth !== 0 ? (
+           auth.articles.map((Data) =>
+                <option key={`${Data.pk}`} value={`${Data.fields.category}`}>{`${Data.fields.category}`}</option>
+              ))
+            :(
+              <p>No results to show</p>
+            )}
+            </select>
+            
               {errors.author && (
                 <span className="text-red-600">Author is required</span>
               )}
@@ -97,13 +142,26 @@ const AddPost = () => {
               )}
             </div>
             <div>
-              <input
+              {/* <input
                 type="text"
                 name="category"
                 placeholder="Categories"
                 className="input input-bordered w-full"
                 {...register("core_categories", { required: true })}
-              />
+              /> */}
+              <select className="input input-bordered w-full" placeholder="author" name="category" id="lang">
+                <option disabled selected hidden >Select a Category</option>
+            { 
+            cate.loading ? (
+            <p> Data is fetching.....</p>
+        ) : cate !== 0 ? (
+           cate.articles.map((Data) =>
+                <option key={`${Data.pk}`} value={`${Data.fields.category}`}>{`${Data.fields.category}`}</option>
+              ))
+            :(
+              <p>No results to show</p>
+            )}
+            </select>
               {errors.core_categories && (
                 <span className="text-red-600">Category is required</span>
               )}

@@ -3,6 +3,8 @@ import { FaHome, FaNewspaper, FaRegEdit } from "react-icons/fa";
 import logo from "../assets/tvLogo.png";
 import AddUser from "../pages/Dashboard/AddUser";
 import AddPost from "../pages/Dashboard/AddPost";
+import AddAuthor from "../pages/Dashboard/AddAuthor"
+import AddCategory from "../pages/Dashboard/AddCategory"
 import { Helmet } from "react-helmet-async";
 
 const Dashboard = () => {
@@ -40,6 +42,8 @@ const Dashboard = () => {
             <Outlet></Outlet>
             <AddUser></AddUser>
             <AddPost></AddPost>
+            <AddAuthor></AddAuthor>
+            <AddCategory></AddCategory>
           </div>
         </div>
         <div className="drawer-side">

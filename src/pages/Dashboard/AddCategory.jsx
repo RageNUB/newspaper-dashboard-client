@@ -2,24 +2,16 @@
 import useURL from "../../hooks/useURL";
 
 const AddUser = () => {
- 
   const baseURL = useURL();
-
   const handleCreateUser = (event) => {
     event.preventDefault();
     const form = event.target;
     const category = form.category.value;
-
-
     const formData = new FormData();
     formData.append('category', category);
 
-
     fetch(`${baseURL}/create_category/`, {
       method: "POST",
-      // headers: {
-      //   "content-type": "application/json",
-      // },
       body: formData,
     })
       .then((res) => res.json())

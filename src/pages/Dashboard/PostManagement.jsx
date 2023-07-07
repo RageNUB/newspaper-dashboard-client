@@ -22,6 +22,18 @@ const PostManagement = () => {
           >
             <FaPlusCircle></FaPlusCircle> Add Post
           </button>
+          <button
+            onClick={() => window.my_modal_4.showModal()}
+            className="btn btn-ghost btn-sm border-2 border-primary bg-primary bg-opacity-5"
+          >
+            <FaPlusCircle></FaPlusCircle> Add Author
+          </button>
+          <button
+            onClick={() => window.my_modal_5.showModal()}
+            className="btn btn-ghost btn-sm border-2 border-primary bg-primary bg-opacity-5"
+          >
+            <FaPlusCircle></FaPlusCircle> Add category
+          </button>
         </div>
       </div>
       <div className="w-full">
