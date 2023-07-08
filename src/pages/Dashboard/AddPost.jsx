@@ -74,8 +74,7 @@ const handleChange=(e)=>{
     fetch(`${baseURL}/create_news_article/`, {
       method: "POST",
       body: formData,
-    })
-      .then((res) => res.json())
+    }).then((res) => res.json())
       .then((data) => {
         if(data.result){
           navigate("/dashboard/post-management");
@@ -83,7 +82,10 @@ const handleChange=(e)=>{
           alert("Post added Succesfully...");
         }
         console.log(data);
-      });
+      }).catch((error)=>{
+        location.reload();
+        console.log(`Failed to add Post`,error)
+      alert(`Failed to add Post ${error}`)});
   };
 
   return (

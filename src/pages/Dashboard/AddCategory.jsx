@@ -23,7 +23,10 @@ const AddUser = () => {
           alert("category added Succesfully...");
         }
         console.log(data);
-      });
+      }).catch((error)=>{
+        location.reload();
+        console.log(`Failed to add category`,error)
+      alert(`Failed to add category ${error}`)});
   };
 
 

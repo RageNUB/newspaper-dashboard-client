@@ -16,7 +16,8 @@ const AddUser = () => {
     fetch(`${baseURL}/create_author/`, {
       method: "POST",
       body: formData,
-    })
+    }).catch((e)=>
+    alert(`failed to add author ${e}`))
       .then((res) => res.json())
       .then((data) => {
         if(data.result==='Author successfully created'){
@@ -25,7 +26,10 @@ const AddUser = () => {
           alert("Author added Succesfully...");
         }
         console.log(data);
-      });
+      }).catch((error)=>{
+        location.reload();
+        console.log(`Failed to add Author`,error)
+      alert(`Failed to add Author ${error}`)});
   };
 
 
