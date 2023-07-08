@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import useURL from "../../hooks/useURL";
-
+import { useNavigate } from "react-router-dom";
 const AddPost = () => {
+  const navigate=useNavigate();
   // console.log(eval(data.result));
   const [time, setTime] = useState(new Date());
   const baseURL = useURL()
@@ -52,22 +53,35 @@ const AddPost = () => {
       setcate({ loading: false, articles: eval(cate.result) });
     })();
   }, []);
-  
-
+  const[value,setvalue]=useState("Admin");
+  const[categ,setCateg]=useState("Gravitas");
+  const handleCategory=(e)=>{
+    setCateg(e.target.value);
+  }
+  // console.log(categ);
+const handleChange=(e)=>{
+  setvalue(e.target.value);
+}
+// console.log(value);
   const onSubmit = (data) => {
     const formData = new FormData();
     formData.append('title', data.title);
     formData.append('cover_image', data.img);
-    formData.append('author', data.author);
+    formData.append('author', value);
     formData.append('content', data.content);
-    formData.append('categories', data.core_categories);
-    
+    formData.append('category', categ);
+    console.log("hii",formData);
     fetch(`${baseURL}/create_news_article/`, {
       method: "POST",
       body: formData,
     })
       .then((res) => res.json())
       .then((data) => {
+        if(data.result){
+          navigate("/dashboard/post-management");
+          location.reload();
+          alert("Post added Succesfully...");
+        }
         console.log(data);
       });
   };
@@ -99,20 +113,20 @@ const AddPost = () => {
             </div>
             <div>
           
-            <select className="input input-bordered w-full" placeholder="author" name="category" id="lang">
-                <option disabled selected hidden>Select a Author</option>
+            <select className="input input-bordered w-full"  placeholder="author" id="lang" onChange={handleChange}>
+                <option selected disabled>Select a Author</option>
             { 
             auth.loading ? (
             <p> Data is fetching.....</p>
         ) : auth !== 0 ? (
            auth.articles.map((Data) =>
-                <option key={`${Data.pk}`} value={`${Data.fields.category}`}>{`${Data.fields.category}`}</option>
+                <option name="author" key={`${Data.pk}`}  value={`${Data.fields.author}`}>{`${Data.fields.author}`}</option>
               ))
             :(
               <p>No results to show</p>
             )}
             </select>
-            
+             
               {errors.author && (
                 <span className="text-red-600">Author is required</span>
               )}
@@ -142,27 +156,20 @@ const AddPost = () => {
               )}
             </div>
             <div>
-              {/* <input
-                type="text"
-                name="category"
-                placeholder="Categories"
-                className="input input-bordered w-full"
-                {...register("core_categories", { required: true })}
-              /> */}
-              <select className="input input-bordered w-full" placeholder="author" name="category" id="lang">
-                <option disabled selected hidden >Select a Category</option>
+              <select className="input input-bordered w-full" placeholder="category" name="category" id="lang" onChange={handleCategory}>
+                <option  selected disabled >Select a Category</option>
             { 
             cate.loading ? (
             <p> Data is fetching.....</p>
         ) : cate !== 0 ? (
            cate.articles.map((Data) =>
-                <option key={`${Data.pk}`} value={`${Data.fields.category}`}>{`${Data.fields.category}`}</option>
+                <option name="category" key={`${Data.pk}`} value={`${Data.fields.category}`}>{`${Data.fields.category}`}</option>
               ))
             :(
               <p>No results to show</p>
             )}
             </select>
-              {errors.core_categories && (
+              {errors.category && (
                 <span className="text-red-600">Category is required</span>
               )}
             </div>
@@ -188,7 +195,7 @@ const AddPost = () => {
             </div>
           </div>
           <div className="modal-action justify-center">
-            <button className="btn btn-primary px-12">Add New Post</button>
+            <button  className="btn btn-primary px-12">Add New Post</button>
           </div>
         </form>
       </div>

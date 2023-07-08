@@ -1,21 +1,27 @@
 
 import useURL from "../../hooks/useURL";
-
+import { useNavigate } from "react-router-dom";
 const AddUser = () => {
+  const navigate=useNavigate();
   const baseURL = useURL();
   const handleCreateUser = (event) => {
     event.preventDefault();
     const form = event.target;
-    const category = form.category.value;
+    const categories = form.categories.value;
     const formData = new FormData();
-    formData.append('category', category);
-
+    formData.append('categories', categories);
+    console.log(categories);
     fetch(`${baseURL}/create_category/`, {
       method: "POST",
       body: formData,
     })
       .then((res) => res.json())
       .then((data) => {
+        if(data.result){
+          navigate("/dashboard/post-management");
+          location.reload();
+          alert("category added Succesfully...");
+        }
         console.log(data);
       });
   };
@@ -30,7 +36,7 @@ const AddUser = () => {
           </button>
         </form>
         <h1 className="text-2xl font-bold text-center mt-2 ">
-          Let&apos;s add category
+          Let&apos;s add categories
         </h1>
         <form
           onSubmit={handleCreateUser}
@@ -40,7 +46,7 @@ const AddUser = () => {
             <div className="form-control">
               <input
                 type="text"
-                name="category"
+                name="categories"
                 placeholder="Category name"
                 className="input input-bordered w-full"
               />

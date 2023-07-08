@@ -1,8 +1,9 @@
-
 import useURL from "../../hooks/useURL";
+import { useNavigate } from "react-router-dom";
 // import useMEDIA from "../../hooks/useMEDIA";
 const AddUser = () => {
   const baseURL = useURL();
+  const navigate=useNavigate();
   // const baseMedia=useMEDIA();
   const handleCreateUser = (event) => {
     event.preventDefault();
@@ -18,9 +19,15 @@ const AddUser = () => {
     })
       .then((res) => res.json())
       .then((data) => {
+        if(data.result==='Author successfully created'){
+          navigate("/dashboard/post-management");
+          location.reload();
+          alert("Author added Succesfully...");
+        }
         console.log(data);
       });
   };
+
 
 
   return (
