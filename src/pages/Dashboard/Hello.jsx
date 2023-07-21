@@ -1,13 +1,34 @@
 import { useState,useEffect,navigate } from "react";
 import useURL from "../../hooks/useURL";
 import { useForm } from "react-hook-form";
+import "./update.css";
 import { useNavigate, useParams } from "react-router-dom";
 function Hello() {
-
     const navigate=useNavigate();
     const {id}=useParams();
     const key={id};
-    console.log(key);
+    // console.log(key);
+    // console.log(key)
+    const DeleteCategory=()=>{
+        const formData1 = new FormData();
+        formData1.append('article_id',key.id);
+        fetch(`${baseURL}/delete_article/`, {
+            method: "POST",
+            body: formData1,
+          }).catch((e)=>{
+            console.log(e);
+          }).then((res) => res.json())
+          .then((data) => {
+            if(data.result){
+                navigate("/dashboard/post-management");
+                alert("Post deleted Succesfully...");
+                location.reload();
+              }
+            console.log(data);
+        }).catch((error)=>{
+            console.log(error);
+        });
+    }
     const [time, setTime] = useState(new Date());
     const baseURL = useURL()
     const {
@@ -59,7 +80,7 @@ function Hello() {
     useEffect(() => {
       (async () => {
         const auth = await fet1();
-        console.log(eval(auth.result));
+        // console.log(eval(auth.result));
         setauth({ loading: false, articles: eval(auth.result) });
       })();
     }, []);
@@ -90,27 +111,32 @@ function Hello() {
     }, [baseURL]);
     // console.log(newses[0].fields.content);
 
-    const[categ,setCateg]=useState("Gravitas");
+    const[categ,setCateg]=useState("");
     const handleCategory=(e)=>{
       setCateg(e.target.value);
     }
 
-    const[value,setvalue]=useState("Admin");
+    const[value,setvalue]=useState("");
     const handleChange=(e)=>{
       setvalue(e.target.value);
     }
-    // console.log(categ);
 
-  // console.log(value);
+    const[imagee,setimagee]=useState("");
+    const handleimg=(e)=>{
+      setimagee(e.target.files);
+    }
+
     const onSubmit = (data) => {
       const formData = new FormData();
+      formData.append('article_id',key.id);
       formData.append('title', data.title);
-      formData.append('cover_image', data.img);
+      formData.append('cover_image', imagee[0]);
       formData.append('author', value);
       formData.append('content', data.content);
-      formData.append('category', categ);
+      formData.append('categories', categ);
+      formData.append('created_at',data.created_at)
       console.log("hii",formData);
-      fetch(`${baseURL}/create_news_article/`, {
+      fetch(`${baseURL}/update_article/`, {
         method: "POST",
         body: formData,
       }).then((res) => res.json())
@@ -118,14 +144,15 @@ function Hello() {
           if(data.result){
             navigate("/dashboard/post-management");
             location.reload();
-            alert("Post added Succesfully...");
+            alert("Post edited Succesfully...");
           }
           console.log(data);
         }).catch((error)=>{
           location.reload();
-          console.log(`Failed to add Post`,error)
-        alert(`Failed to add Post ${error}`)});
+          console.log(`Failed to edit Post`,error)
+        alert(`Failed to edit Post ${error}`)});
     };
+    const [visible,setvisible]=useState(false);
   return (
   <div>
   {not.loading?"Data is fetching...":(
@@ -145,11 +172,9 @@ function Hello() {
             type="text"
             name="title"
             defaultValue={not.articles[0].fields.title}
-            // value={not.loading?"Data is fetching...":not.articles[0].fields.title}
-            // onChange={handleChange}
             placeholder="Title"
             className="input input-bordered w-full"
-
+            {...register("title", { required: true })}
           />
           {errors.title && (
             <span className="text-red-600">Title is required</span>
@@ -157,7 +182,7 @@ function Hello() {
         </div>
         <div> 
         <select className="input input-bordered w-full"  placeholder="author" id="lang" onChange={handleChange}>
-            <option selected disabled>Select a Author</option>
+            <option selected disabled>{not.articles[0].fields.author}</option>
         { 
         auth.loading ? (
         <p> Data is fetching.....</p>
@@ -173,64 +198,65 @@ function Hello() {
             <span className="text-red-600">Author is required</span>
           )}
         </div>
-        <div>
-          <input
-            type="text"
-            // key={not.loading?"not loaded":"loaded"}
-            // onChange={handleChange}
-            name="tags"
-            placeholder="Tags"
-            className="input input-bordered w-full"
-            {...register("tags", { required: false })}
-          />
-          {errors.tags && (
-            <span className="text-red-600">Tags is required</span>
-          )}
-        </div>
-        <div>
-          <input
-            type="file"
-            name="image"
-            placeholder="Image"
-            className="file-input file-input-bordered file-input-primary w-full"
-            {...register("img", { required: true })}
-          />
-          {errors.img && (
-            <span className="text-red-600">Image is required</span>
-          )}
-        </div>
-        <div>
-          <select className="input input-bordered w-full" placeholder="category" name="category" id="lang" onChange={handleCategory}>
-            <option  selected disabled >Select a Category</option>
+
+
+        <div className="form-group row flex">
+            <label className="col-sm-3 mx-4 mt-3 col-form-label">Do you want to edit image? </label>
+            <div className=" col-sm-2 mt-3 mx-2">
+            Yes<input type="radio" className="mx-2" name="isyes" value="1" onClick={()=>setvisible(true)}/>
+            </div>
+            <div className="col-sm-2 mt-3">
+                No<input type="radio" className="mx-2 mt-1" name="isyes" value="0" onClick={()=>setvisible(false)}/>
+            </div>
+        </div>   
+
+        <div> 
+        <select className="input input-bordered w-full"  placeholder="Category" name="category" id="lang" onChange={handleCategory}>
+            <option selected disabled>{not.articles[0].fields.categories}</option>
         { 
         cate.loading ? (
         <p> Data is fetching.....</p>
     ) : cate !== 0 ? (
        cate.articles.map((Data) =>
-            <option name="category" key={`${Data.pk}`} value={`${Data.fields.category}`}>{`${Data.fields.category}`}</option>
+            <option name="categories" key={`${Data.pk}`}  value={`${Data.fields.category}`} >{`${Data.fields.category}` }</option>
+           
           ))
         :(
           <p>No results to show</p>
         )}
-        </select>
+        </select>  
           {errors.category && (
             <span className="text-red-600">Category is required</span>
           )}
         </div>
+        {visible && 
+        <div> 
+        <input
+            type="file"
+            name="img"
+            placeholder="Image"
+            onChange={handleimg}
+            className="file-input file-input-bordered file-input-primary w-full"
+            // {...register("img", { required: true })}
+          />
+          {errors.img && (
+            <span className="text-red-600">Image is required</span>
+          )}
+        </div>
+        }
         <div>
           <input
             type="datetime-local"
             name="currenttime"
+            defaultValue={not.articles[0].fields.created_at}
             placeholder={`${time.toLocaleDateString()} ${time.toLocaleTimeString()}`}
             className="input input-bordered w-full"
-          
             {...register("created_at", { required: false })}
           />
         </div>
         <div className="col-span-2 w-full">
           <textarea
             defaultValue={not.articles[0].fields.content}
-         
             {...register("content", { required: true })}
             className="textarea textarea-bordered textarea-sm w-full max-w-6xl"
             placeholder="Content"
@@ -246,6 +272,9 @@ function Hello() {
     </form>
   </div>
   )}
+  <div>
+        <button className="button-5" onClick={DeleteCategory}>Delete</button>
+      </div>
   </div>
   )
 }

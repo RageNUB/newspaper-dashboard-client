@@ -33,7 +33,7 @@ const ManagePost = () => {
                 alt="Shoes"
               />
             </figure>
-            {  console.log(baseMedia,news.fields.cover_image)}
+            {/* {  console.log(baseMedia,news.fields.cover_image)} */}
             <div className="card-body">
               <h2 className="text-xl font-bold">{news.fields.title}</h2>
               <p className="text-base font-medium">{news.fields.author}</p>
@@ -48,4 +48,3 @@ const ManagePost = () => {
 };
 
 export default ManagePost;
-// export {FirstName};

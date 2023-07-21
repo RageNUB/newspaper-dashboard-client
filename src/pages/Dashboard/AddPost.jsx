@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import useURL from "../../hooks/useURL";
-import { useNavigate } from "react-router-dom";
+import "./update.css"
+import { useNavigate,useParams } from "react-router-dom";
 const AddPost = () => {
   const navigate=useNavigate();
   // console.log(eval(data.result));
+
+
   const [time, setTime] = useState(new Date());
   const baseURL = useURL()
   const {
@@ -53,8 +56,8 @@ const AddPost = () => {
       setcate({ loading: false, articles: eval(cate.result) });
     })();
   }, []);
-  const[value,setvalue]=useState("Admin");
-  const[categ,setCateg]=useState("Gravitas");
+  const[value,setvalue]=useState("");
+  const[categ,setCateg]=useState("");
   const handleCategory=(e)=>{
     setCateg(e.target.value);
   }
@@ -62,14 +65,19 @@ const AddPost = () => {
 const handleChange=(e)=>{
   setvalue(e.target.value);
 }
+    const[imagee,setimagee]=useState("");
+    const handleimg=(e)=>{
+      setimagee(e.target.files);
+    }
 // console.log(value);
   const onSubmit = (data) => {
     const formData = new FormData();
     formData.append('title', data.title);
-    formData.append('cover_image', data.img);
+    // formData.append('cover_image', data.img);
+    formData.append('cover_image', imagee[0]);
     formData.append('author', value);
     formData.append('content', data.content);
-    formData.append('category', categ);
+    formData.append('categories', categ);
     console.log("hii",formData);
     fetch(`${baseURL}/create_news_article/`, {
       method: "POST",
@@ -77,15 +85,16 @@ const handleChange=(e)=>{
     }).then((res) => res.json())
       .then((data) => {
         if(data.result){
-          navigate("/dashboard/post-management");
-          location.reload();
-          alert("Post added Succesfully...");
+            navigate("/dashboard/post-management");
+            location.reload();
+            alert("Post added Succesfully...");
         }
         console.log(data);
       }).catch((error)=>{
-        location.reload();
-        console.log(`Failed to add Post`,error)
-      alert(`Failed to add Post ${error}`)});
+        alert(`Failed to add Post ${error}`)
+        navigate("/dashboard/post-management");
+        console.log(`Failed to add Post`,error)  
+});
   };
 
   return (
@@ -128,30 +137,19 @@ const handleChange=(e)=>{
               <p>No results to show</p>
             )}
             </select>
-             
               {errors.author && (
                 <span className="text-red-600">Author is required</span>
               )}
             </div>
-            <div>
-              <input
-                type="text"
-                name="tags"
-                placeholder="Tags"
-                className="input input-bordered w-full"
-                {...register("tags", { required: false })}
-              />
-              {errors.tags && (
-                <span className="text-red-600">Tags is required</span>
-              )}
-            </div>
+
             <div>
               <input
                 type="file"
-                name="image"
+                name="img"
                 placeholder="Image"
+                onChange={handleimg}
                 className="file-input file-input-bordered file-input-primary w-full"
-                {...register("img", { required: true })}
+                // {...register("img", { required: true })}
               />
               {errors.img && (
                 <span className="text-red-600">Image is required</span>
@@ -165,7 +163,7 @@ const handleChange=(e)=>{
             <p> Data is fetching.....</p>
         ) : cate !== 0 ? (
            cate.articles.map((Data) =>
-                <option name="category" key={`${Data.pk}`} value={`${Data.fields.category}`}>{`${Data.fields.category}`}</option>
+                <option name="categories" key={`${Data.pk}`} value={`${Data.fields.category}`}>{`${Data.fields.category}`}</option>
               ))
             :(
               <p>No results to show</p>
@@ -180,8 +178,7 @@ const handleChange=(e)=>{
                 type="datetime-local"
                 name="currenttime"
                 placeholder={`${time.toLocaleDateString()} ${time.toLocaleTimeString()}`}
-                className="input input-bordered w-full"
-              
+                className="input input-bordered w-full"    
                 {...register("created_at", { required: false })}
               />
             </div>
@@ -201,6 +198,7 @@ const handleChange=(e)=>{
           </div>
         </form>
       </div>
+
     </dialog>
   );
 };
