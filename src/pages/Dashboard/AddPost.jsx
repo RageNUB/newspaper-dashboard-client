@@ -18,7 +18,7 @@ const AddPost = () => {
 
   async function fet1(){
     const resp=await fetch(
-      `https://tv369.in:8443/show_author/`
+      `${baseURL}/show_author/`
     );
     // console.log(resp.json())
     return await resp.json();

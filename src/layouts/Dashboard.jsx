@@ -4,7 +4,8 @@ import logo from "../assets/tvLogo.png";
 import AddUser from "../pages/Dashboard/AddUser";
 import AddPost from "../pages/Dashboard/AddPost";
 import AddAuthor from "../pages/Dashboard/AddAuthor"
-import AddCategory from "../pages/Dashboard/AddCategory"
+import AddCategory from "../pages/Dashboard/AddCategory";
+import EditPost from "../pages/Dashboard/EditPost";
 import { Helmet } from "react-helmet-async";
 
 const Dashboard = () => {
@@ -44,6 +45,7 @@ const Dashboard = () => {
             <AddPost></AddPost>
             <AddAuthor></AddAuthor>
             <AddCategory></AddCategory>
+         
           </div>
         </div>
         <div className="drawer-side">
@@ -84,6 +86,26 @@ const Dashboard = () => {
                   to="post-management"
                 >
                   <FaNewspaper></FaNewspaper> Post Management
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive ? "active font-bold text-white" : ""
+                  }
+                  to="author-management"
+                >
+                  <FaNewspaper></FaNewspaper> Author management
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive ? "active font-bold text-white" : ""
+                  }
+                  to="category-management"
+                >
+                  <FaNewspaper></FaNewspaper> Category management
                 </NavLink>
               </li>
             </div>

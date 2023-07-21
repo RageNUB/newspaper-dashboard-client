@@ -9,7 +9,7 @@ const AddUser = () => {
     const form = event.target;
     const categories = form.categories.value;
     const formData = new FormData();
-    formData.append('categories', categories);
+    formData.append('category', categories);
     console.log(categories);
     fetch(`${baseURL}/create_category/`, {
       method: "POST",
@@ -18,7 +18,7 @@ const AddUser = () => {
       .then((res) => res.json())
       .then((data) => {
         if(data.result){
-          navigate("/dashboard/post-management");
+          navigate("/dashboard/category-management");
           location.reload();
           alert("category added Succesfully...");
         }

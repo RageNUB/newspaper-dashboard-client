@@ -11,8 +11,8 @@ const AddUser = () => {
     const author = form.author.value;
     const formData = new FormData();
     formData.append('author', author);
-
-
+    console.log(formData);
+    
     fetch(`${baseURL}/create_author/`, {
       method: "POST",
       body: formData,
