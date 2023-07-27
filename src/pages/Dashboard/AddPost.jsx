@@ -2,12 +2,10 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import useURL from "../../hooks/useURL";
 import "./update.css"
-import { useNavigate,useParams } from "react-router-dom";
+import "./alert.css"
 const AddPost = () => {
-  const navigate=useNavigate();
-  // console.log(eval(data.result));
   const [showsuccessalert,setshowSuccessAlert]=useState(false)
-
+  const [showdangeralert,setshowDangerAlert]=useState(false);
   const [time, setTime] = useState(new Date());
   const baseURL = useURL()
   const {
@@ -56,6 +54,7 @@ const AddPost = () => {
       setcate({ loading: false, articles: eval(cate.result) });
     })();
   }, []);
+
   const[value,setvalue]=useState("");
   const[categ,setCateg]=useState("");
   const handleCategory=(e)=>{
@@ -86,14 +85,12 @@ const handleChange=(e)=>{
       .then((data) => {
         if(data.result){
           setshowSuccessAlert(true);
-            navigate("/dashboard/post-management");
-            location.reload();
-            alert("Post added Succesfully...");
+          setshowDangerAlert(false);
         }
         console.log(data);
       }).catch((error)=>{
-        alert(`Failed to add Post ${error}`)
-        navigate("/dashboard/post-management");
+        setshowDangerAlert(true);
+        setshowSuccessAlert(false);
         console.log(`Failed to add Post`,error)  
 });
   };
@@ -101,9 +98,16 @@ const handleChange=(e)=>{
   return (
     <dialog id="my_modal_2" className="modal">
        {showsuccessalert && 
-    <div className={"alert alert-success alert-dismissible fade show" }  role="alert">
-  <strong>Success!</strong> Category Added successfully...
+    <div className={"alert alert-success aler" }  role="alert">
+  <strong>Success!</strong> Post Added successfully...
   <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={()=>setshowSuccessAlert(false)}>
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>}
+        {showdangeralert && 
+    <div className="alert alert-danger ale"  role="alert">
+  <strong>Error!</strong> Post cannot be added...
+  <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={()=>setshowDangerAlert(false)}>
     <span aria-hidden="true">&times;</span>
   </button>
 </div>}

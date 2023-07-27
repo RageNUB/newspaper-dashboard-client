@@ -5,21 +5,21 @@ import AddUser from "../pages/Dashboard/AddUser";
 import AddPost from "../pages/Dashboard/AddPost";
 import AddAuthor from "../pages/Dashboard/AddAuthor"
 import AddCategory from "../pages/Dashboard/AddCategory";
-import EditPost from "../pages/Dashboard/EditPost";
 import { Helmet } from "react-helmet-async";
 import {BsPersonLinesFill} from "react-icons/bs"
-import {TbCategory2} from "react-icons/tb"
+import {TbCategory2} from "react-icons/tb";
+import './dash.css' 
 const Dashboard = () => {
   return (
     <div>
       <Helmet>
         <title>TV369 | Dashboard</title>
       </Helmet>
-      <div className="drawer lg:drawer-open bg-base-200">
+      <div className="drawer lg:drawer-open bg-base-200 ">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content  flex flex-col items-center justify-start">
           {/* Page content here */}
-          <div className="w-full navbar justify-between bg-base-100 lg:hidden">
+          <div className="w-full navbar justify-between bg-base-100 lg:hidden ap">
             <div className="flex-none lg:hidden">
               <label htmlFor="my-drawer-2" className="btn btn-square btn-ghost">
                 <svg

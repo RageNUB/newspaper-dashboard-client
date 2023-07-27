@@ -1,11 +1,11 @@
-
 import { useState } from "react";
 import useURL from "../../hooks/useURL";
 // import { useNavigate } from "react-router-dom";
 const AddUser = () => {
   // const navigate=useNavigate();
   const baseURL = useURL();
-  const [showsuccessalert,setshowSuccessAlert]=useState(false)
+  const [showsuccessalert,setshowSuccessAlert]=useState(false);
+  const [showDangerAlert,setshowDangerAlert]=useState(false);
   const handleCreateUser = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -16,30 +16,37 @@ const AddUser = () => {
     fetch(`${baseURL}/create_category/`, {
       method: "POST",
       body: formData,
-
     })
       .then((res) => res.json())
       .then((data) => {
         if(data.result){
           setshowSuccessAlert(true);
+          setshowDangerAlert(false);
           // navigate("/dashboard/category-management");
           // location.reload();
           // alert("category added Succesfully...");
         }
         console.log(data);
       }).catch((error)=>{
-        location.reload();
-        console.log(`Failed to add category`,error)
-      alert(`Failed to add category ${error}`)});
+        setshowDangerAlert(true);
+        setshowSuccessAlert(false);
+        console.log(error); 
+      })
   };
-
 
   return (
     <dialog id="my_modal_5" className="modal">
-        {showsuccessalert && 
-    <div className={"alert alert-success alert-dismissible fade show" }  role="alert">
+    {showsuccessalert && 
+    <div className={"alert alert-success alert-dismissible fade show aler" }  role="alert">
   <strong>Success!</strong> Category Added successfully...
   <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={()=>setshowSuccessAlert(false)}>
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>}
+  {showDangerAlert && 
+    <div className="alert alert-danger ale"  role="alert">
+  <strong>Error!</strong> Category cannot be added because it is already present.. 
+  <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={()=>setshowDangerAlert(false)}>
     <span aria-hidden="true">&times;</span>
   </button>
 </div>}

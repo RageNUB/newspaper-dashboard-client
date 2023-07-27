@@ -1,34 +1,40 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useMemo } from "react";
 import {Link} from "react-router-dom";
 import useURL from "../../hooks/useURL";
 import useMEDIA from "../../hooks/useMEDIA";
 import './managepost.css';
 const ManageCategory = () => {
   const [newses, setNewses] = useState([]);
+  const [sortType, setSortType] = useState("default");
   const baseURL = useURL();
   const baseMedia=useMEDIA();
+ 
+
+
   useEffect(() => {
     fetch(`${baseURL}/show_category/`)
       .then((res) => res.json())
-      .then((data) => setNewses(eval(data.result)
+      .then((data) => setNewses(Object.values(eval(data.result))
       ));    
   }, [baseURL]);
 
-      // newses && newses.sort(function (a, b) {
-      //   if (a.fields.category < b.fields.category) {
-      //     console.log("hi",a.fields.category )
-      //     return -1;
-      //   }
-      //   if (a.fields.category > b.fields.category) {
-      //     return 1;
-      //   }
-      //   return 0;
-      // });
-      // // console.log("hi",newses);
-      // setNewses(newses);
- 
 
-  console.log(newses);
+  // const sortedData = useMemo(() => {
+  //   let result = newses;
+
+  //   if (sortType === "descending") {
+  //     result = newses.sort((a, b) => {
+  //       console.log("55",a);
+  //       return b.fields.category.localeCompare(a.fields.category);
+  //     });
+  //   } else if (sortType === "ascending") {
+  //     result = newses.sort((a, b) => {
+  //       return a.fields.category.localeCompare(b.fields.category);
+  //     });
+  //   }
+  //   return result;
+  // }, [newses, sortType]);
+
   return (
     <div className="w-full ap">
       <div className="overflow-x-auto">
@@ -41,7 +47,7 @@ const ManageCategory = () => {
           </thead>
           <tbody>
             {/* row 1 */}
-            {newses.map((news) => (
+            {newses.sort((a,b)=>a.fields.category.toLowerCase()>b.fields.category.toLowerCase()?1:-1).map((news) => (
               <tr key={news.pk}>
               <Link to={`/dashboard/category-management/${news.pk}`}>
                 <td>
@@ -57,7 +63,7 @@ const ManageCategory = () => {
                   </div>
                 </td>
                 <td>
-                  <div className="font-bold">{news.fields.category}</div>
+                  <div className="font-bold">{news.fields.category.charAt(0).toUpperCase()+news.fields.category.slice(1)}</div>
                 </td>
                 </Link>
               </tr>

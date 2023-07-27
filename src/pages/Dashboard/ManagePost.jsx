@@ -6,10 +6,10 @@ import { Link } from "react-router-dom";
 import './managepost.css';
 
 const ManagePost = () => {
-  const [newses, setNewses] = useState([]);
+  
   const baseURL = useURL();
   const baseMedia=useMEDIA();
-  
+  const [newses, setNewses] = useState([]);
   useEffect(() => {
     fetch(`${baseURL}/show_all_articles/`)
       .then((res) => res.json())

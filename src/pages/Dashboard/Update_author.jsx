@@ -1,16 +1,19 @@
 
 import {  useParams } from "react-router-dom";
 import useURL from "../../hooks/useURL";
-import { useNavigate } from "react-router-dom";
 import './update.css'
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 function Update_author() {
-  const [showsuccessalert,setshowSuccessAlert]=useState(false)
+  const navigate=useNavigate();
+  const [showsuccessalert,setshowSuccessAlert]=useState(false);
+  const [showDangerAlert,setshowDangerAlert]=useState(false);
+  const [showdeletealert,setshowdeleteAlert]=useState(false);
+  const [shownotdeletealert,setnotdeletealert]=useState(false);
     const {id}=useParams();
     const key={id};
     console.log(key)
     const baseURL = useURL();
-    const navigate=useNavigate();
     const DeleteAuthor=()=>{
         const formData1 = new FormData();
         formData1.append('author_id',key.id);
@@ -19,24 +22,16 @@ function Update_author() {
             body: formData1,
           }).catch((e)=>{
             console.log(e);
+            setnotdeletealert(true);
+            setshowdeleteAlert(false);
           }).then((res) => res.json())
           .then((data) => {
-            if(data.result==='Author successfully deleted'){
-                navigate("/dashboard/author-management");
-                alert("Author deleted Succesfully...");
-                location.reload();
+            if(data.result){
+              setnotdeletealert(false);
+              setshowdeleteAlert(true);
               }
-              if(data.result==='Author not found.'){
-                navigate("/dashboard/author-management");
-                alert("Author not found...");
-                location.reload();
-              } 
-        }).catch((error)=>{
-            location.reload();
-            console.log(`Failed to add Category`,error)
-          alert(`Failed to delete author ${error}`)});
+        })
     }
-    // const baseMedia=useMEDIA();
     const handleCreateUser = (event) => {
       event.preventDefault();
       const form = event.target;
@@ -54,30 +49,51 @@ function Update_author() {
       alert(`failed to edit author ${e}`))
         .then((res) => res.json())
         .then((data) => {
-          if(data.result==='Author success((fully updated'){
-            setshowSuccessAlert(true)
-            // navigate("/dashboard/author-management");
-            // alert("Author updated Succesfully...");
-            // location.reload();
+          if(data.result){
+            setshowSuccessAlert(true);
+            setshowDangerAlert(false);
           }
           console.log(data);
         }).catch((error)=>{
-          location.reload();
-          console.log(`Failed to add Author`,error)
-        alert(`Failed to add Author ${error}`)});
+          setshowSuccessAlert(false);
+          setshowDangerAlert(true);
+          console.log(error);
+          });
     };
   return (
     <div>
-     {showsuccessalert && 
-    <div className={"alert alert-success alert-dismissible fade show" }  role="alert">
-  <strong>Success!</strong> Author editted successfully...
+    {showsuccessalert && 
+    <div className={"alert alert-success alert-dismissible fade show aler" }  role="alert">
+  <strong>Success!</strong> Author Editted successfully...
   <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={()=>setshowSuccessAlert(false)}>
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>}
+    {showDangerAlert && 
+    <div className="alert alert-danger ale"  role="alert">
+  <strong>Error!</strong> Author cannot be editted because it is already present...
+  <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={()=>setshowDangerAlert(false)}>
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>}
+
+    {showdeletealert && 
+    <div className={"alert alert-success alert-dismissible fade show aler" }  role="alert">
+  <strong>Success!</strong> Author Deleted successfully...
+  <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={()=>setshowdeleteAlert(false)}>
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>}
+        {shownotdeletealert && 
+    <div className="alert alert-danger ale"  role="alert">
+  <strong>Error!</strong> Author cannot be editted because it is already present...
+  <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={()=>setnotdeletealert(false)}>
     <span aria-hidden="true">&times;</span>
   </button>
 </div>}
         <div method="dialog" className="modal-box w-11/12 max-w-2xl">
         <form>
-          <button className="btn btn-sm btn-circle btn-ghost text-2xl absolute right-2 top-2">
+          <button className="btn btn-sm btn-circle btn-ghost text-2xl absolute right-2 top-2" onClick={()=>navigate("/dashboard/author-management")}>
             ✕
           </button>
         </form>

@@ -29,7 +29,7 @@ const ManageAuthor = () => {
           </thead>
           <tbody>
             {/* row 1 */}
-            {newses.map((news) => (
+            {newses.sort((a,b)=>a.fields.author.toLowerCase()>b.fields.author.toLowerCase()?1:-1).map((news) => (
               <tr key={news.pk}>
               <Link to={`/dashboard/author-management/${news.pk}`}>
                 <td>

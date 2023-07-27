@@ -4,9 +4,11 @@ import { useForm } from "react-hook-form";
 import "./update.css";
 import { useNavigate, useParams } from "react-router-dom";
 function Hello() {
-  const [showsuccessalert,setshowSuccessAlert]=useState(false)
+  const [showsuccessalert,setshowSuccessAlert]=useState(false);
+  const [showdangeralert,setshowDangerAlert]=useState(false);
+  const [showdeletealert,setshowdeleteAlert]=useState(false);
+  const [shownotdeletealert,setnotdeletealert]=useState(false);
     const navigate=useNavigate();
-
     const {id}=useParams();
     const key={id};
     // console.log(key);
@@ -17,14 +19,15 @@ function Hello() {
         fetch(`${baseURL}/delete_article/`, {
             method: "POST",
             body: formData1,
-          }).catch((e)=>{
-            console.log(e);
           }).then((res) => res.json())
           .then((data) => {
-            setshowSuccessAlert(true);
+            setshowdeleteAlert(true);
+            setnotdeletealert(false);
             console.log(data);
         }).catch((error)=>{
-            console.log(error);
+           setnotdeletealert(true);
+           setshowdeleteAlert(false);
+           console.log(error);
         });
     }
     const [time, setTime] = useState(new Date());
@@ -140,31 +143,52 @@ function Hello() {
       }).then((res) => res.json())
         .then((data) => {
           if(data.result){
-            navigate("/dashboard/post-management");
-            location.reload();
-
-            alert("Post edited Succesfully...");
+            setshowSuccessAlert(true);
+            setshowDangerAlert(false);
           }
           console.log(data);
         }).catch((error)=>{
-          location.reload();
-          console.log(`Failed to edit Post`,error)
-        alert(`Failed to edit Post ${error}`)});
+          setshowSuccessAlert(false);
+          setshowDangerAlert(true);
+          console.log(error);
+        })
     };
     const [visible,setvisible]=useState(false);
   return (
   <div>
-         {showsuccessalert && 
-    <div className={"alert alert-success alert-dismissible fade show" }  role="alert">
-  <strong>Success!</strong> Category Added successfully...
+  {not.loading?"Data is fetching...":(
+    <div method="dialog" className="modal-box w-11/12 max-w-5xl">
+    {showsuccessalert && 
+    <div className={"alert alert-success alert-dismissible fade show aler" }  role="alert">
+  <strong>Success!</strong> Post Editted successfully...
   <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={()=>setshowSuccessAlert(false)}>
     <span aria-hidden="true">&times;</span>
   </button>
 </div>}
-  {not.loading?"Data is fetching...":(
-    <div method="dialog" className="modal-box w-11/12 max-w-5xl">
+        {showdangeralert && 
+    <div className="alert alert-danger ale"  role="alert">
+  <strong>Error!</strong> Post cannot be editted ...
+  <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={()=>setshowDangerAlert(false)}>
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>}
+
+{showdeletealert && 
+    <div className={"alert alert-success alert-dismissible fade show aler" }  role="alert">
+  <strong>Success!</strong> Post deleted successfully...
+  <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={()=>setshowdeleteAlert(false)}>
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>}
+        {shownotdeletealert && 
+    <div className="alert alert-danger ale"  role="alert">
+  <strong>Error!</strong> Post cannot be deleted because it is already deleted...
+  <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={()=>setnotdeletealert(false)}>
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>}
     <form>
-      <button  className="btn btn-sm btn-circle btn-ghost text-2xl absolute right-2 top-2">
+      <button  className="btn btn-sm btn-circle btn-ghost text-2xl absolute right-2 top-2" onClick={()=>navigate("/dashboard/post-management")}>
         ✕
       </button>
     </form>

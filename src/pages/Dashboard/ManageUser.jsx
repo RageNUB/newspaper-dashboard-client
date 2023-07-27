@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import useURL from "../../hooks/useURL";
 
 const ManageUser = () => {
-  const [users, setUsers] = useState([]);
+  
   const baseURL = useURL()
-
+  const [users, setUsers] = useState([]);
   useEffect(() => {
     fetch(`${baseURL}/show_users/`)
       .then((res) => res.json())
