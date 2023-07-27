@@ -4,7 +4,9 @@ import { useForm } from "react-hook-form";
 import "./update.css";
 import { useNavigate, useParams } from "react-router-dom";
 function Hello() {
+  const [showsuccessalert,setshowSuccessAlert]=useState(false)
     const navigate=useNavigate();
+
     const {id}=useParams();
     const key={id};
     // console.log(key);
@@ -19,11 +21,7 @@ function Hello() {
             console.log(e);
           }).then((res) => res.json())
           .then((data) => {
-            if(data.result){
-                navigate("/dashboard/post-management");
-                alert("Post deleted Succesfully...");
-                location.reload();
-              }
+            setshowSuccessAlert(true);
             console.log(data);
         }).catch((error)=>{
             console.log(error);
@@ -57,7 +55,7 @@ function Hello() {
         (async () => {
           const not = await fet3();
           console.log(eval(not.result));
-          setnot({ loading: false, articles: eval(not.result) });
+          setnot({ loading: false, articles: eval(not.result).reverse() });
         })();
     },[]);
     // setvalue(not.loading?"fetching":not.articles[0].fields.title);
@@ -81,7 +79,7 @@ function Hello() {
       (async () => {
         const auth = await fet1();
         // console.log(eval(auth.result));
-        setauth({ loading: false, articles: eval(auth.result) });
+        setauth({ loading: false, articles: eval(auth.result).reverse() });
       })();
     }, []);
     async function fet2(){
@@ -144,6 +142,7 @@ function Hello() {
           if(data.result){
             navigate("/dashboard/post-management");
             location.reload();
+
             alert("Post edited Succesfully...");
           }
           console.log(data);
@@ -155,6 +154,13 @@ function Hello() {
     const [visible,setvisible]=useState(false);
   return (
   <div>
+         {showsuccessalert && 
+    <div className={"alert alert-success alert-dismissible fade show" }  role="alert">
+  <strong>Success!</strong> Category Added successfully...
+  <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={()=>setshowSuccessAlert(false)}>
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>}
   {not.loading?"Data is fetching...":(
     <div method="dialog" className="modal-box w-11/12 max-w-5xl">
     <form>
@@ -188,7 +194,7 @@ function Hello() {
         <p> Data is fetching.....</p>
     ) : auth !== 0 ? (
        auth.articles.map((Data) =>
-            <option name="author" key={`${Data.pk}`}  value={`${Data.fields.author}`}>{`${Data.fields.author}`}</option>
+            <option name="author" key={`${Data.pk}`}  value={`${Data.fields.author}`.charAt(0).toUpperCase()+`${Data.fields.author}`.slice(1)}>{`${Data.fields.author}`.charAt(0).toUpperCase()+`${Data.fields.author}`.slice(1)}</option>
           ))
         :(
           <p>No results to show</p>
@@ -218,7 +224,7 @@ function Hello() {
         <p> Data is fetching.....</p>
     ) : cate !== 0 ? (
        cate.articles.map((Data) =>
-            <option name="categories" key={`${Data.pk}`}  value={`${Data.fields.category}`} >{`${Data.fields.category}` }</option>
+            <option name="categories" key={`${Data.pk}`}  value={`${Data.fields.category}`.charAt(0).toUpperCase()+`${Data.fields.category}`.slice(1)} >{`${Data.fields.category}`.charAt(0).toUpperCase()+`${Data.fields.category}`.slice(1) }</option>
            
           ))
         :(
@@ -235,6 +241,7 @@ function Hello() {
             type="file"
             name="img"
             placeholder="Image"
+            accept="image/png, image/jpg, image/jpeg"
             onChange={handleimg}
             className="file-input file-input-bordered file-input-primary w-full"
             // {...register("img", { required: true })}

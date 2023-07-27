@@ -7,7 +7,8 @@ import AddAuthor from "../pages/Dashboard/AddAuthor"
 import AddCategory from "../pages/Dashboard/AddCategory";
 import EditPost from "../pages/Dashboard/EditPost";
 import { Helmet } from "react-helmet-async";
-
+import {BsPersonLinesFill} from "react-icons/bs"
+import {TbCategory2} from "react-icons/tb"
 const Dashboard = () => {
   return (
     <div>
@@ -45,7 +46,6 @@ const Dashboard = () => {
             <AddPost></AddPost>
             <AddAuthor></AddAuthor>
             <AddCategory></AddCategory>
-         
           </div>
         </div>
         <div className="drawer-side">
@@ -83,19 +83,9 @@ const Dashboard = () => {
                   className={({ isActive }) =>
                     isActive ? "active font-bold text-white" : ""
                   }
-                  to="post-management"
-                >
-                  <FaNewspaper></FaNewspaper> Post Management
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  className={({ isActive }) =>
-                    isActive ? "active font-bold text-white" : ""
-                  }
                   to="author-management"
                 >
-                  <FaNewspaper></FaNewspaper> Author management
+                <BsPersonLinesFill></BsPersonLinesFill> Author management
                 </NavLink>
               </li>
               <li>
@@ -105,9 +95,21 @@ const Dashboard = () => {
                   }
                   to="category-management"
                 >
-                  <FaNewspaper></FaNewspaper> Category management
+                  <TbCategory2></TbCategory2> Category management
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive ? "active font-bold text-white" : ""
+                  }
+                  to="post-management"
+                >
+                  <FaNewspaper></FaNewspaper> Post Management
+                </NavLink>
+              </li>
+
+   
             </div>
           </ul>
         </div>

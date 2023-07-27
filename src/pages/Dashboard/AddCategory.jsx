@@ -1,9 +1,11 @@
 
+import { useState } from "react";
 import useURL from "../../hooks/useURL";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 const AddUser = () => {
-  const navigate=useNavigate();
+  // const navigate=useNavigate();
   const baseURL = useURL();
+  const [showsuccessalert,setshowSuccessAlert]=useState(false)
   const handleCreateUser = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -14,13 +16,15 @@ const AddUser = () => {
     fetch(`${baseURL}/create_category/`, {
       method: "POST",
       body: formData,
+
     })
       .then((res) => res.json())
       .then((data) => {
         if(data.result){
-          navigate("/dashboard/category-management");
-          location.reload();
-          alert("category added Succesfully...");
+          setshowSuccessAlert(true);
+          // navigate("/dashboard/category-management");
+          // location.reload();
+          // alert("category added Succesfully...");
         }
         console.log(data);
       }).catch((error)=>{
@@ -32,6 +36,13 @@ const AddUser = () => {
 
   return (
     <dialog id="my_modal_5" className="modal">
+        {showsuccessalert && 
+    <div className={"alert alert-success alert-dismissible fade show" }  role="alert">
+  <strong>Success!</strong> Category Added successfully...
+  <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={()=>setshowSuccessAlert(false)}>
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>}
       <div method="dialog" className="modal-box w-11/12 max-w-2xl">
         <form>
           <button className="btn btn-sm btn-circle btn-ghost text-2xl absolute right-2 top-2">

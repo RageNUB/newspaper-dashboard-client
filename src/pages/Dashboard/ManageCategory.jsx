@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {Link} from "react-router-dom";
 import useURL from "../../hooks/useURL";
 import useMEDIA from "../../hooks/useMEDIA";
+import './managepost.css';
 const ManageCategory = () => {
   const [newses, setNewses] = useState([]);
   const baseURL = useURL();
@@ -9,18 +10,33 @@ const ManageCategory = () => {
   useEffect(() => {
     fetch(`${baseURL}/show_category/`)
       .then((res) => res.json())
-      .then((data) => setNewses(eval(data.result)));
+      .then((data) => setNewses(eval(data.result)
+      ));    
   }, [baseURL]);
+
+      // newses && newses.sort(function (a, b) {
+      //   if (a.fields.category < b.fields.category) {
+      //     console.log("hi",a.fields.category )
+      //     return -1;
+      //   }
+      //   if (a.fields.category > b.fields.category) {
+      //     return 1;
+      //   }
+      //   return 0;
+      // });
+      // // console.log("hi",newses);
+      // setNewses(newses);
+ 
+
   console.log(newses);
   return (
-    <div className="w-full">
+    <div className="w-full ap">
       <div className="overflow-x-auto">
         <table className="table">
           {/* head */}
           <thead>
-            <tr>
-              <th></th>
-              <th>Category</th>
+            <tr> 
+              <th className="nams">Category</th>
             </tr>
           </thead>
           <tbody>

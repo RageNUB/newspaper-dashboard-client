@@ -2,8 +2,10 @@
 import {  useParams } from "react-router-dom";
 import useURL from "../../hooks/useURL";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import "./update.css"
 function Update_Category() {
+  const [showsuccessalert,setshowSuccessAlert]=useState(false)
     const {id}=useParams();
     const key={id};
     console.log(key)
@@ -20,9 +22,10 @@ function Update_Category() {
           }).then((res) => res.json())
           .then((data) => {
             if(data.result==='Category successfully deleted'){
-                navigate("/dashboard/category-management");
-                alert("category deleted Succesfully...");
-                location.reload();
+                setshowSuccessAlert(true)
+                // navigate("/dashboard/category-management");
+                // alert("category deleted Succesfully...");
+                // location.reload();
               }
             console.log(data);
         }).catch((error)=>{
@@ -58,6 +61,13 @@ function Update_Category() {
     };
   return (
     <div>
+     {showsuccessalert && 
+    <div className={"alert alert-success alert-dismissible fade show" }  role="alert">
+  <strong>Success!</strong> Category Added successfully...
+  <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={()=>setshowSuccessAlert(false)}>
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>}
         <div method="dialog" className="modal-box w-11/12 max-w-2xl">
         <form>
           <button className="btn btn-sm btn-circle btn-ghost text-2xl absolute right-2 top-2">

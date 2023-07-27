@@ -3,7 +3,7 @@ import useURL from "../../hooks/useURL";
 // import {createContext} from 'react';
 import useMEDIA from "../../hooks/useMEDIA";
 import { Link } from "react-router-dom";
-
+import './managepost.css';
 
 const ManagePost = () => {
   const [newses, setNewses] = useState([]);
@@ -13,12 +13,12 @@ const ManagePost = () => {
   useEffect(() => {
     fetch(`${baseURL}/show_all_articles/`)
       .then((res) => res.json())
-      .then((data) => setNewses(eval(data.result)));
+      .then((data) => setNewses(Object.values(eval(data.result)).reverse()));
   }, [baseURL]);
   console.log(newses);
 
   return (
-    <div className="my-5"> 
+    <div className="my-5 ap"> 
       <div className="px-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center">
         {newses.map((news) => (    
           <div

@@ -1,9 +1,40 @@
 import useURL from "../../hooks/useURL";
-import { useNavigate } from "react-router-dom";
+import { useState,useEffect } from "react";
+// import { useNavigate} from "react-router-dom";
+
 // import useMEDIA from "../../hooks/useMEDIA";
 const AddUser = () => {
   const baseURL = useURL();
-  const navigate=useNavigate();
+  // const navigate=useNavigate();
+  const[dup,setDup]=useState(false);
+  const [newses, setNewses] = useState([]);
+  const[rep,setrep]=useState("");
+  // const [showDangerAlert, setshowDangerAlert] = useState(false);
+  const [showSuccessAlert, setshowSuccessAlert] = useState(false);
+  const controller = new AbortController();
+  const signal = controller.signal;
+  useEffect(() => {
+    fetch(`${baseURL}/show_author/`)
+      .then((res) => res.json())
+      .then((data) => setNewses(Object.values(eval(data.result)).reverse()));
+  }, [baseURL]);
+  console.log(newses);
+
+  // const handleChange=(e)=>{
+  //   newses.map((neww) =>{
+  //     console.log(e.target.value)
+  //     if(e.target.value===neww.fields.author){
+  //       setDup(true);
+  //       console.log("aa")
+  //       setrep("duplicate");
+  //     }
+  //     if(e.target.value!==neww.fields.author){
+  //       setrep("");
+  //     }
+
+  //   })
+  // }
+
   // const baseMedia=useMEDIA();
   const handleCreateUser = (event) => {
     event.preventDefault();
@@ -12,31 +43,57 @@ const AddUser = () => {
     const formData = new FormData();
     formData.append('author', author);
     console.log(formData);
-    
+    newses.map((neww) =>{
+      if(neww.fields.author===author){
+        setDup(true);
+        alert("duplicate");
+      }
+      return;
+    })
+    if(dup===true){
+      throw new Error("anjoff")
+    }
+
     fetch(`${baseURL}/create_author/`, {
       method: "POST",
       body: formData,
-    }).catch((e)=>
-    alert(`failed to add author ${e}`))
+      signal:signal,
+    }).catch((e)=>{
+    if (e.name === 'AbortError') {
+      // Request was aborted
+      console.log('Request was aborted');
+      alert(`failed to add author ${e}`)
+    }})
       .then((res) => res.json())
       .then((data) => {
         if(data.result==='Author successfully created'){
-          navigate("/dashboard/post-management");
-          location.reload();
-          alert("Author added Succesfully...");
+          setshowSuccessAlert('active')
+          // navigate("/dashboard/author-management");
+          // location.reload();
+          // alert("Author added Succesfully...");
         }
         console.log(data);
       }).catch((error)=>{
-        location.reload();
+        setshowDangerAlert(true)
+        // location.reload();
         console.log(`Failed to add Author`,error)
       alert(`Failed to add Author ${error}`)});
   };
 
+  if(dup===true){
+    controller.abort();
+  }
 
-
-  return (
+  return ( 
     <dialog id="my_modal_4" className="modal">
       <div method="dialog" className="modal-box w-11/12 max-w-2xl">
+      {showSuccessAlert && 
+      <div className={"alert alert-success alert-dismissible fade show" }  role="alert">
+    <strong>Success!</strong> Author Added successfully...
+    <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={()=>setshowSuccessAlert(false)}>
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>} 
         <form>
           <button className="btn btn-sm btn-circle btn-ghost text-2xl absolute right-2 top-2">
             ✕
@@ -58,6 +115,7 @@ const AddUser = () => {
                 className="input input-bordered w-full"
               />
             </div>
+          <p>{rep}</p>
           </div>
           <div className="flex justify-center mt-7">
             <input

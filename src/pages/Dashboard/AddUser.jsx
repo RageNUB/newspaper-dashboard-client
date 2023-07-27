@@ -4,6 +4,7 @@ import useURL from "../../hooks/useURL";
 
 const AddUser = () => {
   const [isShow, setIsShow] = useState(false);
+  const [showsuccessalert,setshowSuccessAlert]=useState(false)
   const baseURL = useURL();
 
   const handleCreateUser = (event) => {
@@ -27,13 +28,23 @@ const AddUser = () => {
     })
       .then((res) => res.json())
       .then((data) => {
+        if(data.result){
+          setshowSuccessAlert(true);
         console.log(data);
+        }
       });
   };
 
 
   return (
     <dialog id="my_modal_3" className="modal">
+        {showsuccessalert && 
+    <div className={"alert alert-success alert-dismissible fade show" }  role="alert">
+  <strong>Success!</strong> Category Added successfully...
+  <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={()=>setshowSuccessAlert(false)}>
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>}
       <div method="dialog" className="modal-box w-11/12 max-w-2xl">
         <form>
           <button className="btn btn-sm btn-circle btn-ghost text-2xl absolute right-2 top-2">

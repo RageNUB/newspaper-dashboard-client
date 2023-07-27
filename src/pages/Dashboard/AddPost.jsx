@@ -6,7 +6,7 @@ import { useNavigate,useParams } from "react-router-dom";
 const AddPost = () => {
   const navigate=useNavigate();
   // console.log(eval(data.result));
-
+  const [showsuccessalert,setshowSuccessAlert]=useState(false)
 
   const [time, setTime] = useState(new Date());
   const baseURL = useURL()
@@ -85,6 +85,7 @@ const handleChange=(e)=>{
     }).then((res) => res.json())
       .then((data) => {
         if(data.result){
+          setshowSuccessAlert(true);
             navigate("/dashboard/post-management");
             location.reload();
             alert("Post added Succesfully...");
@@ -99,6 +100,13 @@ const handleChange=(e)=>{
 
   return (
     <dialog id="my_modal_2" className="modal">
+       {showsuccessalert && 
+    <div className={"alert alert-success alert-dismissible fade show" }  role="alert">
+  <strong>Success!</strong> Category Added successfully...
+  <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={()=>setshowSuccessAlert(false)}>
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>}
       <div method="dialog" className="modal-box w-11/12 max-w-5xl">
         <form>
           <button className="btn btn-sm btn-circle btn-ghost text-2xl absolute right-2 top-2">
@@ -131,7 +139,7 @@ const handleChange=(e)=>{
             <p> Data is fetching.....</p>
         ) : auth !== 0 ? (
            auth.articles.map((Data) =>
-                <option name="author" key={`${Data.pk}`}  value={`${Data.fields.author}`}>{`${Data.fields.author}`}</option>
+                <option name="author" key={`${Data.pk}`}  value={`${Data.fields.author}`.charAt(0).toUpperCase()+`${Data.fields.author}`.slice(1)}>{`${Data.fields.author}`.charAt(0).toUpperCase()+`${Data.fields.author}`.slice(1)}</option>
               ))
             :(
               <p>No results to show</p>
@@ -146,6 +154,7 @@ const handleChange=(e)=>{
               <input
                 type="file"
                 name="img"
+                accept="image/png, image/jpg, image/jpeg"
                 placeholder="Image"
                 onChange={handleimg}
                 className="file-input file-input-bordered file-input-primary w-full"
@@ -163,7 +172,7 @@ const handleChange=(e)=>{
             <p> Data is fetching.....</p>
         ) : cate !== 0 ? (
            cate.articles.map((Data) =>
-                <option name="categories" key={`${Data.pk}`} value={`${Data.fields.category}`}>{`${Data.fields.category}`}</option>
+                <option name="categories" key={`${Data.pk}`} value={`${Data.fields.category}`.charAt(0).toUpperCase()+`${Data.fields.category}`.slice(1)}>{`${Data.fields.category}`.charAt(0).toUpperCase()+`${Data.fields.category}`.slice(1)}</option>
               ))
             :(
               <p>No results to show</p>

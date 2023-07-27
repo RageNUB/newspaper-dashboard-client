@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useURL from "../../hooks/useURL";
 import { Link } from "react-router-dom";
 import {AiTwotoneDelete} from "react-icons/ai";
+import './managepost.css'
 const ManageAuthor = () => {
   const [newses, setNewses] = useState([]);
   const baseURL = useURL();
@@ -16,14 +17,14 @@ const ManageAuthor = () => {
     console.log(del);
   }
   return (
-    <div className="w-full">
+    <div className="w-full ap">
       <div className="overflow-x-auto">
         <table className="table">
           {/* head */}
           <thead>
-            <tr>
-              <th></th>
-              <th>Name</th>
+            <tr className="nams">
+              
+              <th className="">Name</th>
             </tr>
           </thead>
           <tbody>
@@ -44,7 +45,7 @@ const ManageAuthor = () => {
                   </div>
                 </td>
                 <td>
-                  <div className="font-bold">{news.fields.author}</div>
+                  <div className="font-bold nam">{news.fields.author.charAt(0).toUpperCase()+news.fields.author.slice(1)}</div>
                 </td>
                </Link>
               </tr>
