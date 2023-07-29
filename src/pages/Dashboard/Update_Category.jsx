@@ -62,7 +62,8 @@ function Update_Category() {
     };
   return (
     <div>
-     {showsuccessalert && 
+        <div method="dialog" className="modal-box w-11/12 max-w-2xl">
+        {showsuccessalert && 
     <div className={"alert alert-success alert-dismissible fade show aler" }  role="alert">
   <strong>Success!</strong> Category Editted successfully...
   <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={()=>setshowSuccessAlert(false)}>
@@ -91,7 +92,6 @@ function Update_Category() {
     <span aria-hidden="true">&times;</span>
   </button>
 </div>}
-        <div method="dialog" className="modal-box w-11/12 max-w-2xl">
         <form>
           <button className="btn btn-sm btn-circle btn-ghost text-2xl absolute right-2 top-2" onClick={()=>navigate("/dashboard/category-management")}>
             ✕

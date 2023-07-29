@@ -36,7 +36,8 @@ const AddUser = () => {
 
   return (
     <dialog id="my_modal_5" className="modal">
-    {showsuccessalert && 
+      <div method="dialog" className="modal-box w-11/12 max-w-2xl">
+      {showsuccessalert && 
     <div className={"alert alert-success alert-dismissible fade show aler" }  role="alert">
   <strong>Success!</strong> Category Added successfully...
   <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={()=>setshowSuccessAlert(false)}>
@@ -50,7 +51,6 @@ const AddUser = () => {
     <span aria-hidden="true">&times;</span>
   </button>
 </div>}
-      <div method="dialog" className="modal-box w-11/12 max-w-2xl">
         <form>
           <button className="btn btn-sm btn-circle btn-ghost text-2xl absolute right-2 top-2">
             ✕
