@@ -1,8 +1,38 @@
-.ap{
-    overflow-x: hidden;
-    -ms-overflow-x: hidden;
-}
+
 .nams{
   border-left: 17px solid;
   border-color: transparent;  /* line-height: 10; */
 }
+.w-full {
+  width: 100%;
+}
+/* @media (min-width: 1465px){
+.lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+}*/
+@media (min-width: 850px){
+.md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.lg\:w-\[72rem\] {
+    width: 68vw;
+}}
+@media (min-width: 1400px){
+.lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}}
+@media (min-width: 1200px){
+  .lg\:w-\[72rem\] {
+      width: 68vw;
+  }
+  } 
+@media (min-width: 1400px){
+.lg\:w-\[72rem\] {
+    width: 75vw;
+}
+}
+@media (min-width: 1024px) and (max-width:1400px){
+ .w-64 {
+  width: 18vw;
+}  }
